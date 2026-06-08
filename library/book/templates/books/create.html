@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create Book (Librarian Only)</h2>
+<form method="POST">
+  {% csrf_token %}
+  <input name="name" placeholder="Title" required><br><br>
+  <input name="description" placeholder="Description"><br><br>
+  <input name="count" type="number" placeholder="Count" min="1" required><br><br>
+  <label>Select Authors (Hold Ctrl to select multiple):</label><br>
+  <select name="authors" multiple required>
+    {% for author in authors %}
+    <option value="{{ author.id }}">{{ author.name }} {{ author.surname }}</option>
+    {% endfor %}
+  </select><br><br>
+  <button type="submit">Create</button>
+</form>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create Author</h2>
+<form method="POST">
+  {% csrf_token %}
+  <input name="name" placeholder="First Name" required><br><br>
+  <input name="surname" placeholder="Last Name" required><br><br>
+  <input name="patronymic" placeholder="Patronymic"><br><br>
+  <button type="submit">Create</button>
+</form>
+{% endblock %}

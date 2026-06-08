@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>My Orders</h2>
+<ul>
+  {% for order in orders %}
+  <li>
+    <strong>{{ order.book.name }}</strong> |
+    Ordered: {{ order.created_at }} |
+    Planned Return: {{ order.plated_end_at }} |
+    Status: 
+    {% if order.end_at %}
+      Returned on {{ order.end_at }}
+    {% else %}
+      <span style="color: green;">Active</span>
+    {% endif %}
+  </li>
+  {% empty %}
+  <li>You don't have any orders yet.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

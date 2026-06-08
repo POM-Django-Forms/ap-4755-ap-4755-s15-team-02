@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>System Users (Librarian View)</h2>
+<ul>
+  {% for u in users %}
+  <li>
+    <a href="/users/{{ u.id }}/">{{ u.email }}</a> - Role: {% if u.role == 1 %}Librarian{% else %}Guest/User{% endif %}
+    | <a href="/books/user/{{ u.id }}/">View Provided Books</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

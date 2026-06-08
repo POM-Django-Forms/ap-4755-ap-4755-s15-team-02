@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Authors Management</h2>
+<p><a href="/authors/create/">[+] Create New Author</a></p>
+<ul>
+  {% for author in authors %}
+  <li>
+    {{ author.name }} {{ author.surname }} {{ author.patronymic }}
+    | <a href="/authors/delete/{{ author.id }}/" style="color: red;">Delete</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

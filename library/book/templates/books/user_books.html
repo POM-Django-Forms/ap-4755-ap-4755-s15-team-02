@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Books provided to User ID: {{ target_user_id }}</h2>
+<ul>
+  {% for order in orders %}
+  <li><strong>{{ order.book.name }}</strong> (Issued: {{ order.created_at }} | Status: {% if order.end_at %}Returned on
+    {{ order.end_at }}{% else %}Active{% endif %})</li>
+  {% empty %}
+  <li>No books provided to this user.</li>
+  {% endfor %}
+</ul>
+<a href="/users/">Back to Users</a>
+{% endblock %}
