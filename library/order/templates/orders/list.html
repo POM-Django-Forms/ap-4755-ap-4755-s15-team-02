@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All System Orders</h2>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>User</th>
+    <th>Book</th>
+    <th>Planned End</th>
+    <th>Status/Action</th>
+  </tr>
+  {% for order in orders %}
+  <tr>
+    <td>{{ order.user.email }}</td>
+    <td>{{ order.book.name }}</td>
+    <td>{{ order.plated_end_at }}</td>
+    <td>
+      {% if not order.end_at %}
+      <a href="/orders/{{ order.id }}/close/">Close Order</a>
+      {% else %}
+      Closed at {{ order.end_at }}
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

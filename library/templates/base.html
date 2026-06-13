@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Library System</title>
+</head>
+
+<body>
+  <nav>
+    <a href="/">Home</a> |
+    {% if user %}
+    <strong>{{ user.email }} ({% if user.role == 1 %}Librarian{% else %}User{% endif %})</strong> |
+    <a href="/books/">Books</a> |
+    {% if user.role == 1 %}
+    <a href="/users/">Users</a> |
+    <a href="/orders/">All Orders</a> |
+    <a href="/authors/">Authors</a> |
+    {% else %}
+    <a href="/my-orders/">My Orders</a> |
+    <a href="/orders/create/">Create Order</a> |
+    {% endif %}
+    <a href="/logout/">Logout</a>
+    {% else %}
+    <a href="/login/">Login</a> | <a href="/register/">Register</a>
+    {% endif %}
+  </nav>
+  <hr>
+  {% block content %}{% endblock %}
+</body>
+
+</html>

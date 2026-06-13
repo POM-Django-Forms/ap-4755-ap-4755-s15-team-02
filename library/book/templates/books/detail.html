@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ book.name }}</h2>
+<p><strong>Description:</strong> {{ book.description }}</p>
+<p><strong>Available Count:</strong> {{ book.count }}</p>
+
+{% if user.role == 0 %}
+<a href="/orders/create/?book_id={{ book.id }}">Borrow this book</a>
+{% endif %}
+
+<h4>Authors:</h4>
+<ul>
+  {% for author in book.authors.all %}
+  <li>{{ author.name }} {{ author.surname }} {{ author.patronymic }}</li>
+  {% empty %}
+  <li>No authors assigned.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Books Catalog</h2>
+<form method="GET" action="/books/">
+  <input type="text" name="title" placeholder="Search by title" value="{{ title_query }}">
+  <input type="text" name="author" placeholder="Search by author" value="{{ author_query }}">
+  <button type="submit">Search</button>
+</form>
+{% if user.role == 1 %}
+<p><a href="/books/create/">[+] Add New Book</a></p>
+{% endif %}
+<ul>
+  {% for book in books %}
+  <li>
+    <a href="/books/{{ book.id }}/"><strong>{{ book.name }}</strong></a> (Available: {{ book.count }})
+  </li>
+  {% empty %}
+  <li>No books found.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

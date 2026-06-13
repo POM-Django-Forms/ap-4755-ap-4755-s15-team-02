@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>User Profile</h2>
+<p><strong>Email:</strong> {{ user_obj.email }}</p>
+<p><strong>Role ID:</strong> {{ user_obj.role }} ({% if user_obj.role == 1 %}Librarian{% else %}Guest{% endif %})</p>
+<h3>Order History:</h3>
+<ul>
+  {% for order in orders %}
+  <li>Book: {{ order.book.name }} | Status: {% if order.end_at %}Closed ({{ order.end_at }}){% else %}Open{% endif %}
+  </li>
+  {% empty %}
+  <li>No orders found for this user.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
