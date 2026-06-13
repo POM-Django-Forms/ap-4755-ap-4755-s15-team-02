@@ -15,9 +15,12 @@
     <a href="/books/{{ book.id }}/"><strong>{{ book.name }}</strong></a> (Available: {{ book.count }})
     {% if user.role == 1 %}
       <a href="/books/{{ book.id }}/delete/" 
-        class="btn btn-danger" 
-        onclick="return confirm('Ви впевнені, що хочете видалити цю книгу?');">
+         class="btn btn-danger" 
+         onclick="return confirm('Ви впевнені, що хочете видалити цю книгу?');">
         Видалити
+      </a>
+      <a href="/books/{{ book.id }}/edit/" class="btn btn-primary">
+        Редагувати
       </a>
     {% endif %} 
   </li>

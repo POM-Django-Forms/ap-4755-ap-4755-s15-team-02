@@ -7,7 +7,7 @@ from authentication.views import (
     users_list,
     user_detail,
 )
-from book.views import books_list, book_detail, user_books, create_book, delete_book
+from book.views import books_list, book_detail, user_books, create_book, delete_book, edit_book
 from order.views import orders_list, create_order, close_order, my_orders
 from author.views import authors_list, create_author, delete_author
 from authentication.utils import get_user
@@ -32,6 +32,7 @@ urlpatterns = [
     path("books/<int:id>/", book_detail, name="book_detail"),
     path("books/user/<int:user_id>/", user_books, name="user_books"),
     path('books/<int:id>/delete/', delete_book, name='delete_book'),
+    path('books/<int:id>/edit/', edit_book, name='edit_book'),
     # USERS
     path("users/", users_list, name="users"),
     path("users/<int:id>/", user_detail, name="user_detail"),

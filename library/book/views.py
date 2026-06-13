@@ -83,3 +83,17 @@ def delete_book(request, id):
         pass
 
     return redirect("/books/")
+
+def edit_book(request, id):
+    user = get_user(request)
+    if not is_librarian(user):
+        return redirect("/books/") 
+    book = get_object_or_404(Book, id=id)
+    if request.method == "POST":
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect("/books/")
+    else:
+        form = BookForm(instance=book)
+    return render(request, "books/edit.html", {"form": form, "user": user, "book": book})
