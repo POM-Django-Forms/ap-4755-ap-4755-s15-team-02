@@ -1,12 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>System Users (Librarian View)</h2>
-<ul>
+<div style="display: flex; flex-direction: row; gap: 15px;">
+  <ul>
+    <p>Librarians:</p>
   {% for u in users %}
-  <li>
-    <a href="/users/{{ u.id }}/">{{ u.email }}</a> - Role: {% if u.role == 1 %}Librarian{% else %}Guest/User{% endif %}
-    | <a href="/books/user/{{ u.id }}/">View Provided Books</a>
-  </li>
+    {% if u.role == 1 %}
+    <li style="margin-bottom: 10px;" >
+      <a href="/users/{{ u.id }}/">{{ u.email }}</a>
+      <a href="/books/user/{{ u.id }}/" style="margin-left: 10px;">View Provided Books</a>
+    </li>
+    {% endif %}
   {% endfor %}
 </ul>
+<ul>
+  <p>Users:</p>
+  {% for u in users %}
+    {% if u.role == 0 %} 
+    <li style="margin-bottom: 10px;" >
+      <a href="/users/{{ u.id }}/"> {{ u.email }}</a>
+      <a href="/books/user/{{ u.id }}/" style="margin-left: 10px;"> View Provided Books </a>
+    </li>
+    {% endif %}
+  {% endfor %}
+</ul>
+</div>
+
 {% endblock %}

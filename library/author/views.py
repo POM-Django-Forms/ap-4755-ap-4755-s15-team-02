@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from authentication.utils import get_user, is_librarian
 from .models import Author
+from .forms import AuthorForm  
 from book.models import Book
 
 
@@ -18,12 +19,14 @@ def create_author(request):
         return redirect("/")
 
     if request.method == "POST":
-        name = request.POST.get("name")
-        surname = request.POST.get("surname")
-        patronymic = request.POST.get("patronymic")
-        Author.create(name, surname, patronymic)
-        return redirect("/authors/")
-    return render(request, "authors/create.html", {"user": user})
+        form = AuthorForm(request.POST)
+        if form.is_valid():
+            form.save() 
+            return redirect("/authors/")
+    else:
+        form = AuthorForm()  
+
+    return render(request, "authors/create.html", {"user": user, "form": form})
 
 
 def delete_author(request, id):

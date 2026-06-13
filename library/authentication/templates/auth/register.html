@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Register</h2>
+{% comment %} <h2>Register</h2>
 <form method="POST">
   {% csrf_token %}
   <input name="email" placeholder="email" required><br><br>
@@ -11,6 +11,12 @@
     <option value="1">Librarian</option>
   </select><br><br>
   <button type="submit">Register</button>
+</form> {% endcomment %}
+<h2>Реєстрація</h2>
+<form method="post">
+    {% csrf_token %}
+    
+    {{ form.as_p }}  <button type="submit" class="btn btn-success">Зареєструватися</button>
 </form>
 <p>Already have an account? <a href="/login/">Login</a></p>
 {% endblock %}

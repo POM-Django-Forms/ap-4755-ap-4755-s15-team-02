@@ -1,9 +1,8 @@
 from django.utils import timezone
 from django.shortcuts import render, redirect
-from django.utils.dateparse import parse_datetime
 from authentication.utils import get_user, is_librarian
 from .models import Order
-from book.models import Book
+from .forms import OrderForm
 
 
 def orders_list(request):
@@ -28,35 +27,30 @@ def create_order(request):
         return redirect("/login/")
 
     if request.method == "POST":
-        book_id = request.POST.get("book_id")
-        plated_end_at_raw = request.POST.get("plated_end_at")
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            # commit=False створює об'єкт замовлення в пам'яті, не записуючи в БД
+            order = form.save(commit=False)
+            order.user = user  #  прив'язуємо поточного авторизованого юзера
+            
+            #  перевірка наявності книги 
+            book = order.book
+            if Order.objects.filter(book=book, end_at__isnull=True).count() < book.count:
+                order.save()      # зберігаємо замовлення
+                book.count -= 1   # зменшуємо кількість книг у бібліотеці
+                book.save()
+                return redirect("/my-orders/")
+            else:
+                form.add_error('book', "На жаль, усі примірники цієї книги зараз зайняті.")
+    else:
+        initial_data = {}
+        selected_book_id = request.GET.get("book_id")
+        if selected_book_id:
+            initial_data['book'] = selected_book_id
+            
+        form = OrderForm(initial=initial_data)
 
-        if not plated_end_at_raw:
-            return render(
-                request,
-                "orders/create.html",
-                {
-                    "books": Book.objects.all(),
-                    "selected_book": book_id,
-                    "error": "Please select planned end date",
-                    "user": user,
-                },
-            )
-
-        book = Book.get_by_id(book_id)
-        plated_end_at = parse_datetime(plated_end_at_raw)
-
-        if book and plated_end_at:
-            Order.create(user, book, plated_end_at)
-            return redirect("/my-orders/")
-
-    books = Book.objects.all()
-    selected_book = request.GET.get("book_id")
-    return render(
-        request,
-        "orders/create.html",
-        {"books": books, "selected_book": selected_book, "user": user},
-    )
+    return render(request, "orders/create.html", {"form": form, "user": user})
 
 
 def close_order(request, id):

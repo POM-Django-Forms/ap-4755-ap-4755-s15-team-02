@@ -1,12 +1,14 @@
 import time
 import datetime
+from django import forms
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from django.utils import timezone
 
+
 ROLE_CHOICES = (
     (0, "visitor"),
-    (1, "admin"),
+    (1, "librarian"),
 )
 
 
@@ -45,7 +47,9 @@ class CustomUser(AbstractBaseUser):
     middle_name = models.CharField(max_length=20, null=True, blank=True)
 
     email = models.EmailField(unique=True)
+
     password = models.CharField(max_length=128)
+    # password = forms.CharField(widget=forms.PasswordInput)
 
     created_at = models.DateTimeField(null=True, blank=True)
     updated_at = models.DateTimeField(null=True, blank=True)

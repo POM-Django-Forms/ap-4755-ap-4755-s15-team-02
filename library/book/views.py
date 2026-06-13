@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from authentication.utils import get_user, is_librarian
 from .models import Book
 from order.models import Order
-from author.models import Author
+from .forms import BookForm
 
 
 def books_list(request):
@@ -59,19 +59,27 @@ def create_book(request):
         return redirect("/books/")
 
     if request.method == "POST":
-        name = request.POST.get("name")
-        description = request.POST.get("description")
-        try:
-            count = int(request.POST.get("count") or 1)
-        except ValueError:
-            count = 1
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()  
+            return redirect("/books/")
+    else:
+        form = BookForm()  
 
-        author_ids = request.POST.getlist("authors")
-        book = Book.objects.create(name=name, description=description, count=count)
-        if author_ids:
-            authors_qs = Author.objects.filter(id__in=author_ids)
-            book.authors.set(authors_qs)
+    return render(request, "books/create.html", {"form": form, "user": user})
+
+def delete_book(request, id):
+    user = get_user(request)
+    if not is_librarian(user):
         return redirect("/books/")
+    
+    book = get_object_or_404(Book, id=id)
+    
+    has_orders = Order.objects.filter(book=book).exists()
+    
+    if not has_orders:
+        book.delete()  
+    else:
+        pass
 
-    authors = Author.objects.all()
-    return render(request, "books/create.html", {"authors": authors, "user": user})
+    return redirect("/books/")

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Create Book (Librarian Only)</h2>
+{% comment %} <h2>Create Book (Librarian Only)</h2>
 <form method="POST">
   {% csrf_token %}
   <input name="name" placeholder="Title" required><br><br>
@@ -13,5 +13,15 @@
     {% endfor %}
   </select><br><br>
   <button type="submit">Create</button>
+</form> {% endcomment %}
+<h2>Додати нову книгу до бібліотеки</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+    
+    <button type="submit" class="btn btn-success">Додати книгу</button>
+    <a href="/books/" class="btn btn-secondary">Скасувати</a>
 </form>
 {% endblock %}

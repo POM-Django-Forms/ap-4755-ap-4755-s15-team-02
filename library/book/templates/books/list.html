@@ -13,6 +13,13 @@
   {% for book in books %}
   <li>
     <a href="/books/{{ book.id }}/"><strong>{{ book.name }}</strong></a> (Available: {{ book.count }})
+    {% if user.role == 1 %}
+      <a href="/books/{{ book.id }}/delete/" 
+        class="btn btn-danger" 
+        onclick="return confirm('Ви впевнені, що хочете видалити цю книгу?');">
+        Видалити
+      </a>
+    {% endif %} 
   </li>
   {% empty %}
   <li>No books found.</li>

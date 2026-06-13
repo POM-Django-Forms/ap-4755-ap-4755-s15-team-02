@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Create Order</h2>
+{% comment %} <h2>Create Order</h2>
 {% if error %} <p style="color: red;">{{ error }}</p> {% endif %}
 <form method="POST">
   {% csrf_token %}
@@ -15,5 +15,21 @@
   <label>Planned End Date:</label><br>
   <input name="plated_end_at" type="datetime-local" required><br><br>
   <button type="submit">Create Order</button>
+</form> {% endcomment %}
+<h2>Створити замовлення на книгу</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    {% if form.errors %}
+        <div class="alert alert-danger" style="color: red;">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    {{ form.as_p }}
+    
+    <button type="submit" class="btn btn-primary">Замовити</button>
+    <a href="/books/" class="btn btn-secondary">Назад до книг</a>
 </form>
 {% endblock %}
